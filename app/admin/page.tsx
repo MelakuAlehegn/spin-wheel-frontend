@@ -23,7 +23,8 @@ export default function AdminPage() {
 
   const fetchStats = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/admin/inventory");
+      // Use relative path so Next.js rewrites proxy to the correct backend (local or deployed)
+      const res = await fetch("/api/admin/inventory");
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
       setStats(data);
