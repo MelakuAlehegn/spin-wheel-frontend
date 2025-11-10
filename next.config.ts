@@ -1,20 +1,24 @@
 import type { NextConfig } from "next";
 
+const backend =
+  process.env.NEXT_PUBLIC_BACKEND_URL ??
+  "http://localhost:8000";
+
 const nextConfig: NextConfig = {
   reactCompiler: true,
   async rewrites() {
     return [
       {
         source: "/api/spin",
-        destination: "https://spin-wheel-backend-eawf.onrender.com/api/spin",
+        destination: `${backend}/api/spin`,
       },
       {
         source: "/api/status",
-        destination: "https://spin-wheel-backend-eawf.onrender.com/api/status",
+        destination: `${backend}/api/status`,
       },
       {
         source: "/api/admin/:path*",
-        destination: "https://spin-wheel-backend-eawf.onrender.com/api/admin/:path*",
+        destination: `${backend}/api/admin/:path*`,
       },
     ];
   },

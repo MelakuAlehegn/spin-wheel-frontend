@@ -42,6 +42,28 @@ export default function AdminPage() {
     return () => clearInterval(interval);
   }, []);
 
+  async function resetFromUI() {
+    const ok = window.confirm(
+      "This will delete all spins and sessions and restore inventory. Are you sure?"
+    );
+    if (!ok) return;
+    try {
+      setLoading(true);
+      const res = await fetch("/api/admin/reset", {
+        method: "POST",
+        headers: {
+          "X-Admin-Secret": process.env.NEXT_PUBLIC_ADMIN_SECRET || "",
+        },
+      });
+      if (!res.ok) throw new Error("Reset failed");
+      await fetchStats();
+    } catch (e) {
+      setError("Reset failed");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#f9fafb]">
@@ -116,9 +138,17 @@ export default function AdminPage() {
         <section className="rounded-2xl border border-[#e8fdf3] bg-white p-6 shadow-sm">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold text-[#02281c]">Inventory Breakdown</h2>
-            <span className="rounded-full bg-[#e8fdf3] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#079964]">
-              Auto-refresh • 5s
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="rounded-full bg-[#e8fdf3] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#079964]">
+                Auto-refresh • 5s
+              </span>
+              <button
+                onClick={resetFromUI}
+                className="rounded-md bg-[#079964] px-3 py-1.5 text-xs font-semibold text-white hover:bg-[#057852]"
+              >
+                Reset event
+              </button>
+            </div>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
