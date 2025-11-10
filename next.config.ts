@@ -6,15 +6,15 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/spin",
-        destination: "http://localhost:8000/api/spin",
+        destination: "https://spin-wheel-backend-eawf.onrender.com/api/spin",
       },
       {
         source: "/api/status",
-        destination: "http://localhost:8000/api/status",
+        destination: "https://spin-wheel-backend-eawf.onrender.com/api/status",
       },
       {
         source: "/api/admin/:path*",
-        destination: "http://localhost:8000/api/admin/:path*",
+        destination: "https://spin-wheel-backend-eawf.onrender.com/api/admin/:path*",
       },
     ];
   },
