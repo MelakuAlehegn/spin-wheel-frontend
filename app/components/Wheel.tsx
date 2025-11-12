@@ -60,7 +60,7 @@ export function Wheel({
   }, []);
 
   const paths = useMemo(() => {
-    const r = 146; // radius tuned to fit inside 300x300 with border
+    const r = 156; // radius tuned to fit inside 300x300 with border
     const cx = 0;
     const cy = 0;
     const toRad = (deg: number) => (deg * Math.PI) / 180;
@@ -149,7 +149,7 @@ export function Wheel({
         <motion.div
           ref={wheelRef}
           className="rounded-full border-4 border-[#e8fdf3] shadow-xl bg-white overflow-hidden"
-          style={{ width: 300, height: 300 }}
+          style={{ width: 320, height: 320 }}
           animate={controls}
           initial={{ rotate: 0 }}
         >
@@ -179,7 +179,8 @@ export function Wheel({
                   x={x}
                   y={y}
                   fill="#fff"
-                  fontSize="10"
+                  fontSize="11"
+                  fontWeight="600"
                   textAnchor="middle"
                   dominantBaseline="middle"
                   transform={`rotate(${angle}, ${x}, ${y})`}
@@ -190,7 +191,7 @@ export function Wheel({
             })}
             {/* Center cap */}
             <circle cx="0" cy="0" r="25" fill="#079964" />
-            <text x="0" y="2" fill="#fff" fontSize="10" textAnchor="middle" fontWeight="600">
+            <text x="0" y="2" fill="#fff" fontSize="11" textAnchor="middle" fontWeight="600">
               Spin
             </text>
           </svg>
