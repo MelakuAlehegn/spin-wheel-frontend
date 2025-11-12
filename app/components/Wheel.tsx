@@ -38,7 +38,7 @@ export function Wheel({
 }) {
   const controls = useAnimationControls();
   const [spinning, setSpinning] = useState(false);
-  const [result, setResult] = useState<{ index: number; slice: Slice } | null>(
+  const [result, setResult] = useState<{ index: number; slice: Slice; isPrize: boolean } | null>(
     null
   );
   const [allPrizesGone, setAllPrizesGone] = useState(false);
@@ -86,6 +86,7 @@ export function Wheel({
 
     let index = typeof toIndex === "number" ? toIndex : 0;
     let label = "";
+    let isPrize = false;
     try {
       const res = await fetch("/api/spin", {
         method: "POST",
@@ -94,13 +95,14 @@ export function Wheel({
       if (res.status === 409) {
         const body = await res.json();
         setSpinning(false);
-        setResult({ index: 0, slice: { label: body.message ?? "Already used", color: "#9CA3AF" } });
+        setResult({ index: 0, slice: { label: body.message ?? "You Have Already Spun", color: "#9CA3AF" }, isPrize: false });
         return;
       }
       if (!res.ok) throw new Error("Spin failed");
       const data = await res.json();
       index = data.sliceIndex;
       label = data.label;
+      isPrize = data.prize || false;
       if (data.allPrizesGone) {
         setAllPrizesGone(true);
       }
@@ -108,6 +110,7 @@ export function Wheel({
       // fallback: random index if backend not running
       index = Math.floor(Math.random() * slices.length);
       label = slices[index].label;
+      isPrize = false;
     }
 
     const turns = 5; // full extra spins for flair
@@ -125,7 +128,7 @@ export function Wheel({
       transition: { type: "tween", duration: 3, ease: [0.12, 0.8, 0.22, 1] },
     });
 
-    const picked = { index, slice: slices[index] ?? { label, color: "#374151" } };
+    const picked = { index, slice: slices[index] ?? { label, color: "#374151" }, isPrize };
     setResult(picked);
     setSpinning(false);
     onSpinEnd?.(picked.index, picked.slice);
@@ -214,9 +217,34 @@ export function Wheel({
           </button>
 
           {result && (
-            <div className="rounded-xl border border-[#e8fdf3] bg-white px-6 py-4 text-center shadow-sm">
-              <p className="text-sm font-medium text-[#079964]/70">Result</p>
-              <p className="mt-1 text-2xl font-semibold text-[#079964]">{result.slice.label}</p>
+            <div className={`rounded-xl border-2 px-8 py-6 text-center shadow-lg ${
+              result.isPrize 
+                ? "border-[#079964] bg-gradient-to-br from-[#e8fdf3] to-white" 
+                : "border-[#e8fdf3] bg-white"
+            }`}>
+              {result.isPrize ? (
+                <>
+                  <div className="mb-3 text-4xl">🎉</div>
+                  <p className="text-lg font-semibold text-[#079964] mb-2">
+                    Congratulations! You Won!
+                  </p>
+                  <p className="text-2xl font-bold text-[#079964] mb-1">
+                    {result.slice.label}
+                  </p>
+                  <p className="text-sm text-[#079964]/70 mt-2">
+                    Claim your prize at the event booth
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-lg font-semibold text-[#079964] mb-2">
+                    {result.slice.label}
+                  </p>
+                  <p className="text-sm text-[#079964]/70">
+                    Thanks for playing! Better luck next time
+                  </p>
+                </>
+              )}
             </div>
           )}
         </>

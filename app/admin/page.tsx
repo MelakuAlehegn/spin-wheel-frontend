@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 type PrizeStats = {
   name: string;
@@ -94,12 +95,22 @@ export default function AdminPage() {
     <div className="min-h-screen bg-[#f9fafb] py-10 px-4">
       <div className="mx-auto max-w-5xl">
         <header className="mb-8 rounded-2xl bg-gradient-to-r from-[#079964] to-[#057852] px-8 py-6 text-white shadow-lg">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h1 className="text-3xl font-semibold">Spin Wheel Admin</h1>
-              <p className="text-sm text-[#e8fdf3]">
-                Monitor inventory, spins and event health in real time.
-              </p>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+              <Image
+                src="/arifpaylogo.png"
+                alt="ArifPay Logo"
+                width={160}
+                height={60}
+                className="h-12 w-auto object-contain"
+                priority
+              />
+              <div>
+                <h1 className="text-3xl font-semibold">Spin Wheel Admin</h1>
+                <p className="text-sm text-[#e8fdf3]">
+                  Monitor inventory, spins and event health in real time.
+                </p>
+              </div>
             </div>
             <button
               onClick={fetchStats}
