@@ -142,7 +142,7 @@ export function Wheel({
           aria-hidden
           className="absolute -top-3 left-1/2 -translate-x-1/2 z-10"
         >
-          <div className="w-0 h-0 border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-[#079964] drop-shadow-lg" />
+          <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#079964] drop-shadow-lg" />
         </div>
 
         {/* Wheel */}
@@ -231,9 +231,9 @@ export function Wheel({
                   <p className="text-2xl font-bold text-[#079964] mb-1">
                     {result.slice.label}
                   </p>
-                  <p className="text-sm text-[#079964]/70 mt-2">
+                  {/* <p className="text-sm text-[#079964]/70 mt-2">
                     Claim your prize at the event booth
-                  </p>
+                  </p> */}
                 </>
               ) : (
                 <>
